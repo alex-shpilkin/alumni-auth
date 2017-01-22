@@ -3,6 +3,7 @@
 """
 Definition of views.
 """
+from itertools import chain
 import json
 
 from django.conf import settings
@@ -99,7 +100,15 @@ def enter(request):
             # Forbid mixing codes for different alumni
             return render(request, 'app/alumni_switch.html', status=403)
         elif new_code.code not in request.session['codes']:
-            # Add new code to active set
+            # Add new code to active set and record trust links
+            for code in chain([request.session['code']], request.session['codes']):
+                code = Invite.objects.get(code=code)
+                InviteLink.objects.get_or_create(
+                    code_from=code, code_to=new_code, is_merged_to=True
+                )
+                InviteLink.objects.get_or_create(
+                    code_from=new_code, code_to=code, is_merged_to=True
+                )
             request.session['codes'].append(new_code.code)
             request.session.modified = True
 
