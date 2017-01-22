@@ -10,6 +10,7 @@ from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadReque
 from django.shortcuts import render, redirect
 from django.template import RequestContext
 from django.utils import timezone
+from django.utils.dateparse import parse_datetime
 
 from app.models import alumni as Alumnus
 from app.models import invites as Invite
@@ -278,3 +279,27 @@ def search(request):
             'value': al.full_name
         })
     return HttpResponse(json.dumps(results), 'application/json')
+
+def verify(request):
+    code = request.GET.getlist('code')
+    if len(code) != 1:
+        return HttpResponseBadRequest("Must pass exactly one value for 'code'")
+    code = code[0]
+
+    time = request.GET.getlist('time')
+    if len(time) != 1:
+        return HttpResponseBadRequest("Must pass exactly one value for 'time'")
+    try:
+        time = parse_datetime(time[0])
+    except ValueError:
+        time = None
+    if time is None or not timezone.is_aware(time):
+        return HttpResponseBadRequest("Must pass a valid RFC 3339 timestamp for 'time'")
+
+    try:
+        code = Invite.objects.get(code=code)
+    except Invite.DoesNotExist:
+        valid = False
+    else:
+        valid = code.valid_at(time)
+    return HttpResponse(json.dumps({ 'valid' : valid }), 'application/json')

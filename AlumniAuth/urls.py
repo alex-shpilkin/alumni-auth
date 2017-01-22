@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^switch/(?P<inv_idx>\d+)$', app.views.switch),
     url(r'^disable/(?P<inv_idx>\d+)$', app.views.disable),
     url(r'^api/search$', app.views.search, name='search'),
+    url(r'^api/verify$', app.views.verify, name='verify'),
     url(r'^enter$', app.views.enter),
     url(r'^clear$', app.views.clear),
 

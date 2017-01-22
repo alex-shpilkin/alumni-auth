@@ -82,6 +82,10 @@ class invites(models.Model):
         if self.disabled_at is None or self.disabled_at > at:
             self.disabled_at = at
 
+    def valid_at(self, datetime):
+        return (self.status != self.STATUS_DISABLED or
+                self.disabled_at > datetime)
+
 #    def __str__(self):
 #        return self.__unicode__()
 
