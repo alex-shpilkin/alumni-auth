@@ -29,7 +29,7 @@ $(document).ready(function () {
     });
 
     $(".alumni-select").autocomplete({
-        source: "/api/get_alumni/",
+        source: "/api/search",
         minLength: 2,
         select: function (event, ui) {
             $('.invitee-id').val(ui.item.id);

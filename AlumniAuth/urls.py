@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^code/(?P<inv_idx>\d+)$', app.views.invite, {'self_issued': True}),
     url(r'^switch/(?P<inv_idx>\d+)$', app.views.switch),
     url(r'^disable/(?P<inv_idx>\d+)$', app.views.disable),
-    url(r'^api/get_alumni/', app.views.get_alumni, name='get_alumni'),
+    url(r'^api/search$', app.views.search, name='search'),
     url(r'^enter$', app.views.enter),
     url(r'^clear$', app.views.clear),
 

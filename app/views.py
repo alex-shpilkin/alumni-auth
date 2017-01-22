@@ -262,7 +262,7 @@ def disable(request, inv_idx):
     return redirect('/')
 
 
-def get_alumni(request):
+def search(request):
     q = request.GET.get('term', '')
     als = Alumnus.objects.filter(full_name__icontains = q)[:20]
     results = []
