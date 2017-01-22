@@ -263,15 +263,18 @@ def disable(request, inv_idx):
 
 
 def search(request):
-    q = request.GET.get('term', '')
-    als = Alumnus.objects.filter(full_name__icontains = q)[:20]
+    query = request.GET.get('term', '')
+    try:
+        limit = int(request.GET.get('limit', settings.SEARCH_LIMIT_DEF))
+    except ValueError:
+        limit = settings.SEARCH_LIMIT_DEF
+    limit = min(settings.SEARCH_LIMIT_MAX, max(0, limit))
+
     results = []
-    for al in als:
-        al_json = {}
-        al_json['id'] = al.alumnus_id
-        al_json['label'] = unicode(al)
-        al_json['value'] = al.full_name
-        results.append(al_json)
-    data = json.dumps(results)
-    mimetype = 'application/json'
-    return HttpResponse(data, mimetype)
+    for al in Alumnus.objects.filter(full_name__icontains=query)[:limit]:
+        results.append({
+            'id': al.alumnus_id,
+            'label': unicode(al),
+            'value': al.full_name
+        })
+    return HttpResponse(json.dumps(results), 'application/json')

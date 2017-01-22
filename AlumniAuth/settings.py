@@ -147,4 +147,6 @@ STATIC_ROOT = posixpath.join(*(BASE_DIR.split(os.path.sep) + ['static']))
 SESSION_COOKIE_AGE = 2419200
 SESSION_VERSION = 1
 
-
+# Search API
+SEARCH_LIMIT_DEF = 20
+SEARCH_LIMIT_MAX = 100
