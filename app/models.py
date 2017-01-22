@@ -21,8 +21,8 @@ class alumni(models.Model):
     added_by = models.CharField(max_length=50)
 
     class Meta:
-        verbose_name = 'Alumnus'
-        verbose_name_plural = 'Alumni'
+        verbose_name = 'alumnus'
+        verbose_name_plural = 'alumni'
 
     def __unicode__(self):
         return self.full_name + ", " + unicode(self.year) + self.letter
@@ -59,8 +59,8 @@ class invites(models.Model):
             self.code = "-".join(code)
 
     class Meta:
-        verbose_name = 'Invite'
-        verbose_name_plural = 'Invites'
+        verbose_name = 'invite'
+        verbose_name_plural = 'invites'
 
     def __unicode__(self):
         return unicode(self.code) + " (" + unicode(self.alumni) + ")"
@@ -94,8 +94,8 @@ class invite_links(models.Model):
     add_time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = 'Invite link'
-        verbose_name_plural = 'Invite links'
+        verbose_name = 'invite link'
+        verbose_name_plural = 'invite links'
 
     def __unicode__(self):
         return unicode(self.code_from) + " -> " + unicode(self.code_to)
